@@ -99,11 +99,11 @@ def main():
                     except:
                         continue
 
-        cv2.imshow("frame",frame)
-        cv2.imshow("thresh",thresh)
+        cv2.imshow("Digit Recognizer",frame)
+        cv2.imshow("Threshold",thresh)
         
 
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if cv2.waitKey(10000) & 0xFF == ord('q'):
             break
 
     cap.release()
