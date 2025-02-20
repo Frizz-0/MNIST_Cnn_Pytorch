@@ -7,19 +7,20 @@ import cv2
 import os
 
 
+# Creating our NN
+
 class MNIST_NN(nn.Module):
 
     def __init__(self):
         super().__init__()
 
         #Convolutional Layers
-        self.conv1 = nn.Conv2d(1,10,5,1)
-        self.conv2 = nn.Conv2d(10,20,5,1)
+        self.conv1 = nn.Conv2d(1,32,3,1,1)
+        self.conv2 = nn.Conv2d(32,64,3,1,1)
 
         #Fully connected Layers
-        self.fc1 = nn.Linear(320, 128)
-        self.fc2 = nn.Linear(128 , 64)
-        self.fc3 = nn.Linear(64 , 10)
+        self.fc1 = nn.Linear(7*7*64, 128)
+        self.fc2 = nn.Linear(128, 10)
 
     def forward(self,x):
 
@@ -30,13 +31,12 @@ class MNIST_NN(nn.Module):
         x = F.relu(self.conv2(x))
         x = F.max_pool2d(x,2,2)
 
-        x = x.view(-1,320)
+        x = x.view(-1,7*7*64)
 
         #Fully connected Layers
 
         x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        x = self.fc3(x)
+        x = self.fc2(x)
 
         return F.log_softmax(x,dim = 1)
     
@@ -56,7 +56,6 @@ def main():
 
 
     cap = cv2.VideoCapture(0)
-
     while True:
 
         _,frame = cap.read()
